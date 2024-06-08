@@ -1,29 +1,34 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
-
-const userFields = {
-  name: "",
-  job: "",
-};
+import { postCreateUser } from "../services/userService";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ModalAddNew = (props) => {
-  const { handleClose, isShowModelAddNew } = props;
-  const [formData, setFormData] = useState(userFields);
+  const { isShowModelAddNew, setShowModelAddNew, handleUpdateTable } = props;
+  const [name, setName] = useState("");
+  const [job, setJob] = useState("");
 
-  const handleOnChange = (e) => {
-    const { name, value } = e.target;
+  const handleClose = () => setShowModelAddNew(false);
 
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-    console.log(">>> Check state: ", formData);
+  const handleSaveUser = async () => {
+    let res = await postCreateUser(name, job);
+    console.log(">>> Check res: ", res);
+    if (res && res.id) {
+      // success
+      handleClose();
+      setName("");
+      setJob("");
+      toast.success("Created user successfully");
+      handleUpdateTable({ id: res.id, first_name: res.name });
+    } else {
+      // error
+      handleClose();
+      toast.error("Error creating user");
+    }
   };
 
-  const handleSaveUser = () => {
-    console.log(">>> Check state: ", formData);
-  };
   return (
     <>
       <Modal show={isShowModelAddNew} onHide={handleClose}>
@@ -38,8 +43,10 @@ const ModalAddNew = (props) => {
                 type="text"
                 className="form-control"
                 name="name"
-                value={formData.name}
-                onChange={handleOnChange}
+                value={name}
+                onChange={(event) => {
+                  setName(event.target.value);
+                }}
               />
             </div>
             <div className="mb-3">
@@ -48,8 +55,10 @@ const ModalAddNew = (props) => {
                 type="text"
                 className="form-control"
                 name="job"
-                value={formData.job}
-                onChange={handleOnChange}
+                value={job}
+                onChange={(event) => {
+                  setJob(event.target.value);
+                }}
               />
             </div>
           </div>
