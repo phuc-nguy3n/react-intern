@@ -1,36 +1,34 @@
 import "./App.scss";
 import Header from "./components/Header";
-import ModalAddNew from "./components/ModalAddNew";
+
 import TableUsers from "./components/TableUsers";
 import Container from "react-bootstrap/Container";
 import { useState } from "react";
+import { ToastContainer } from "react-toastify";
 
 function App() {
-  const [isShowModelAddNew, setShowModelAddNew] = useState(false);
-
-  const handleClose = () => setShowModelAddNew(false);
-  const handleShow = () => setShowModelAddNew(true);
-
   return (
-    <div className="app-container">
-      <Header />
-      <Container>
-        <div className="my-3 add-new">
-          <span>
-            <b>List Users:</b>
-          </span>
-          <button className="btn btn-success" onClick={handleShow}>
-            Add new user
-          </button>
-        </div>
-        <TableUsers />
-      </Container>
+    <>
+      <div className="app-container">
+        <Header />
+        <Container>
+          <TableUsers />
+        </Container>
 
-      <ModalAddNew
-        isShowModelAddNew={isShowModelAddNew}
-        handleClose={handleClose}
-      />
-    </div>
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover={false}
+          theme="light"
+        />
+      </div>
+    </>
   );
 }
 
