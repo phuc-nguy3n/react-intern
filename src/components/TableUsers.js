@@ -24,7 +24,7 @@ const TableUsers = (props) => {
   };
 
   const handlePageClick = (event) => {
-    setCurrentPage(+event.selected + 1);
+    getUsers(+event.selected + 1);
   };
 
   return (
