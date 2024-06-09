@@ -1,11 +1,43 @@
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { putUpdateUser } from "../services/userService";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ModalEditUser = (props) => {
-  const { isShowModelEditUser, handleClose, dataUserEdit } = props;
+  const {
+    isShowModelEditUser,
+    handleClose,
+    dataUserEdit,
+    handleEditUserFormModal,
+  } = props;
   const [name, setName] = useState("");
-  const [job, setJob] = useState(dataUserEdit.last_name);
+  const [job, setJob] = useState("");
+
+  const userUpdate = {
+    id: dataUserEdit.id,
+    email: dataUserEdit.email,
+    first_name: name,
+    last_name: dataUserEdit.last_name,
+    avatar: dataUserEdit.avatar,
+  };
+
+  const handleEditUser = async () => {
+    let res = await putUpdateUser(dataUserEdit.id, name, job);
+    if (res && res.updatedAt) {
+      // success
+      handleClose();
+      setName("");
+      setJob("");
+      toast.success("Edit user successfully");
+      handleEditUserFormModal(dataUserEdit.id, userUpdate);
+    } else {
+      // faild
+      handleClose();
+      toast.error("Error editing user");
+    }
+  };
 
   useEffect(() => {
     if (isShowModelEditUser) {
@@ -13,13 +45,11 @@ const ModalEditUser = (props) => {
     }
   }, [dataUserEdit]);
 
-  console.log(">>> Check handleEditUser: ", dataUserEdit);
-
   return (
     <>
       <Modal show={isShowModelEditUser} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Edir a user</Modal.Title>
+          <Modal.Title>Edit a user</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="body-add-new">
@@ -53,7 +83,14 @@ const ModalEditUser = (props) => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary">Confirm</Button>
+          <Button
+            variant="primary"
+            onClick={() => {
+              handleEditUser();
+            }}
+          >
+            Confirm
+          </Button>
         </Modal.Footer>
       </Modal>
     </>
