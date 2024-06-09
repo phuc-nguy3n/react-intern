@@ -47,6 +47,13 @@ const TableUsers = (props) => {
     setShowModelEditUser(true);
   };
 
+  const handleEditUserFormModal = (userId, userInfo) => {
+    let newUserList = [...userlist].filter((user) => user.id !== userId);
+    let index = userlist.findIndex((user) => user.id === userId);
+    newUserList.splice(index, 0, userInfo);
+    setUserlist(newUserList);
+  };
+
   return (
     <>
       <div className="my-3 add-new">
@@ -57,6 +64,7 @@ const TableUsers = (props) => {
           Add new user
         </button>
       </div>
+
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -93,6 +101,7 @@ const TableUsers = (props) => {
             })}
         </tbody>
       </Table>
+
       <ReactPaginate
         breakLabel="..."
         nextLabel="next >"
@@ -111,6 +120,7 @@ const TableUsers = (props) => {
         containerClassName="pagination"
         activeClassName="active"
       />
+
       <ModalAddNew
         isShowModelAddNew={isShowModelAddNew}
         handleClose={handleClose}
@@ -121,6 +131,7 @@ const TableUsers = (props) => {
         isShowModelEditUser={isShowModelEditUser}
         handleClose={handleClose}
         dataUserEdit={dataUserEdit}
+        handleEditUserFormModal={handleEditUserFormModal}
       />
     </>
   );
