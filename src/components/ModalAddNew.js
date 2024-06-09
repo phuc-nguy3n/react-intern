@@ -6,11 +6,9 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const ModalAddNew = (props) => {
-  const { isShowModelAddNew, setShowModelAddNew, handleUpdateTable } = props;
+  const { isShowModelAddNew, handleClose, handleUpdateTable } = props;
   const [name, setName] = useState("");
   const [job, setJob] = useState("");
-
-  const handleClose = () => setShowModelAddNew(false);
 
   const handleSaveUser = async () => {
     let res = await postCreateUser(name, job);
