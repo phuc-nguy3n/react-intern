@@ -66,11 +66,8 @@ const TableUsers = (props) => {
     setDataUserDelete(user);
   };
 
-  const handleConfirmDeleteUser = () => {
-    let cloneUserList = _.cloneDeep(userlist);
-    let newUserList = cloneUserList.filter(
-      (item) => item.id !== dataUserDelete.id
-    );
+  const handleConfirmDeleteUser = (user) => {
+    let newUserList = userlist.filter((item) => item.id !== user.id);
     setUserlist(newUserList);
   };
 
