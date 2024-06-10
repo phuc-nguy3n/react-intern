@@ -15,23 +15,17 @@ const ModalEditUser = (props) => {
   const [name, setName] = useState("");
   const [job, setJob] = useState("");
 
-  const userUpdate = {
-    id: dataUserEdit.id,
-    email: dataUserEdit.email,
-    first_name: name,
-    last_name: dataUserEdit.last_name,
-    avatar: dataUserEdit.avatar,
-  };
-
   const handleEditUser = async () => {
     let res = await putUpdateUser(dataUserEdit.id, name, job);
     if (res && res.updatedAt) {
       // success
-      handleClose();
-      setName("");
       setJob("");
+      handleClose();
       toast.success("Edit user successfully");
-      handleEditUserFormModal(dataUserEdit.id, userUpdate);
+      handleEditUserFormModal({
+        first_name: name,
+        id: dataUserEdit.id,
+      });
     } else {
       // faild
       handleClose();
