@@ -27,7 +27,7 @@ const ModalEditUser = (props) => {
         id: dataUserEdit.id,
       });
     } else {
-      // faild
+      // error
       handleClose();
       toast.error("Error editing user");
     }
