@@ -41,7 +41,12 @@ const ModalEditUser = (props) => {
 
   return (
     <>
-      <Modal show={isShowModelEditUser} onHide={handleClose}>
+      <Modal
+        backdrop="static"
+        keyboard={false}
+        show={isShowModelEditUser}
+        onHide={handleClose}
+      >
         <Modal.Header closeButton>
           <Modal.Title>Edit a user</Modal.Title>
         </Modal.Header>
