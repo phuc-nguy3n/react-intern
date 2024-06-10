@@ -4,6 +4,7 @@ import { fetchAllUser } from "../services/userService";
 import ReactPaginate from "react-paginate";
 import ModalAddNew from "./ModalAddNew";
 import ModalEditUser from "./ModalEditUser";
+import _ from "lodash";
 
 const TableUsers = (props) => {
   const [userlist, setUserlist] = useState([]);
@@ -47,11 +48,11 @@ const TableUsers = (props) => {
     setShowModelEditUser(true);
   };
 
-  const handleEditUserFormModal = (userId, userInfo) => {
-    let newUserList = [...userlist].filter((user) => user.id !== userId);
-    let index = userlist.findIndex((user) => user.id === userId);
-    newUserList.splice(index, 0, userInfo);
-    setUserlist(newUserList);
+  const handleEditUserFormModal = (user) => {
+    let cloneUserList = _.cloneDeep(userlist);
+    let index = userlist.findIndex((item) => item.id === user.id);
+    cloneUserList[index].first_name = user.first_name;
+    setUserlist(cloneUserList);
   };
 
   return (
