@@ -7,6 +7,7 @@ import ModalEditUser from "./ModalEditUser";
 import ModalConfirm from "./ModalConfirm";
 import _, { debounce } from "lodash";
 import "./TableUsers.scss";
+import { CSVLink, CSVDownload } from "react-csv";
 
 const TableUsers = (props) => {
   const [userlist, setUserlist] = useState([]);
@@ -93,15 +94,36 @@ const TableUsers = (props) => {
     }
   }, 500);
 
+  const csvData = [
+    ["firstname", "lastname", "email"],
+    ["Ahmed", "Tomi", "ah@smthing.co.com"],
+    ["Raed", "Labes", "rl@smthing.co.com"],
+    ["Yezzi", "Min l3b", "ymin@cocococo.com"],
+  ];
+
   return (
     <>
       <div className="my-3 add-new">
         <span>
           <b>List Users:</b>
         </span>
-        <button className="btn btn-success" onClick={handleShow}>
-          Add new user
-        </button>
+        <div className="group-btns">
+          <button className="btn btn-warning">
+            <i class="fa-solid fa-upload"></i>
+            <span> Import</span>
+          </button>
+          <CSVLink
+            filename={"users.csv"}
+            className="btn btn-primary"
+            data={csvData}
+          >
+            <i className="fa-solid fa-download"></i>
+            <span> Export</span>
+          </CSVLink>
+          <button className="btn btn-success" onClick={handleShow}>
+            <i className="fa-solid fa-circle-plus"></i> Add new
+          </button>
+        </div>
       </div>
 
       <div className="col-4 my-3">
