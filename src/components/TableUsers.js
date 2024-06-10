@@ -5,7 +5,7 @@ import ReactPaginate from "react-paginate";
 import ModalAddNew from "./ModalAddNew";
 import ModalEditUser from "./ModalEditUser";
 import ModalConfirm from "./ModalConfirm";
-import _ from "lodash";
+import _, { debounce } from "lodash";
 import "./TableUsers.scss";
 
 const TableUsers = (props) => {
@@ -21,12 +21,11 @@ const TableUsers = (props) => {
   const [isShowModelDelete, setShowModelDelete] = useState(false);
   const [dataUserDelete, setDataUserDelete] = useState({});
 
-  const [sortBy, setSortBy] = useState("asc");
-  const [sortField, setSortField] = useState("id");
+  const [pageNumber, setPageNumber] = useState(1);
 
   useEffect(() => {
     // call APIs
-    getUsers(1);
+    getUsers(pageNumber);
   }, []);
 
   const getUsers = async (page) => {
@@ -40,6 +39,7 @@ const TableUsers = (props) => {
 
   const handlePageClick = (event) => {
     getUsers(+event.selected + 1);
+    setPageNumber(+event.selected + 1);
   };
 
   const handleShow = () => setShowModelAddNew(true);
@@ -76,14 +76,22 @@ const TableUsers = (props) => {
   };
 
   const handleSort = (sortBy, sortField) => {
-    setSortBy(sortBy);
-    setSortField(sortField);
-
     let cloneUserList = _.cloneDeep(userlist);
     cloneUserList = _.orderBy(cloneUserList, [sortField], [sortBy]);
 
     setUserlist(cloneUserList);
   };
+
+  const handleSearch = debounce((event) => {
+    let term = event.target.value;
+    if (term) {
+      let cloneUserList = _.cloneDeep(userlist);
+      cloneUserList = cloneUserList.filter((item) => item.email.includes(term));
+      setUserlist(cloneUserList);
+    } else {
+      getUsers(pageNumber);
+    }
+  }, 500);
 
   return (
     <>
@@ -94,6 +102,14 @@ const TableUsers = (props) => {
         <button className="btn btn-success" onClick={handleShow}>
           Add new user
         </button>
+      </div>
+
+      <div className="col-4 my-3">
+        <input
+          className="form-control"
+          placeholder="Search user by email..."
+          onChange={(event) => handleSearch(event)}
+        />
       </div>
 
       <Table striped bordered hover>
