@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import TableUsers from "./components/TableUsers";
 import Container from "react-bootstrap/Container";
 import { ToastContainer } from "react-toastify";
+import Home from "./components/Home";
 
 function App() {
   return (
@@ -10,7 +11,8 @@ function App() {
       <div className="app-container">
         <Header />
         <Container>
-          <TableUsers />
+          <Home />
+          {/* <TableUsers /> */}
         </Container>
 
         <ToastContainer
