@@ -108,10 +108,11 @@ const TableUsers = (props) => {
           <b>List Users:</b>
         </span>
         <div className="group-btns">
-          <button className="btn btn-warning">
+          <input id="import" type="file" hidden></input>
+          <label for="import" className="btn btn-warning">
             <i class="fa-solid fa-upload"></i>
             <span> Import</span>
-          </button>
+          </label>
           <CSVLink
             filename={"users.csv"}
             className="btn btn-primary"
@@ -173,8 +174,7 @@ const TableUsers = (props) => {
           </tr>
         </thead>
         <tbody>
-          {userlist &&
-            userlist.length > 0 &&
+          {userlist && userlist.length > 0 ? (
             userlist.map((user, index) => {
               return (
                 <>
@@ -200,7 +200,14 @@ const TableUsers = (props) => {
                   </tr>
                 </>
               );
-            })}
+            })
+          ) : (
+            <tr>
+              <td className="text-center fs-5" colspan="5">
+                There are no users in the table
+              </td>
+            </tr>
+          )}
         </tbody>
       </Table>
 
