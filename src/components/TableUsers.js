@@ -6,8 +6,11 @@ import ModalAddNew from "./ModalAddNew";
 import ModalEditUser from "./ModalEditUser";
 import ModalConfirm from "./ModalConfirm";
 import _, { debounce } from "lodash";
+import { CSVLink } from "react-csv";
+import { toast } from "react-toastify";
 import "./TableUsers.scss";
-import { CSVLink, CSVDownload } from "react-csv";
+import "react-toastify/dist/ReactToastify.css";
+import Papa from "papaparse";
 
 const TableUsers = (props) => {
   const [userlist, setUserlist] = useState([]);
@@ -114,6 +117,55 @@ const TableUsers = (props) => {
     }
   };
 
+  const handleImportCSV = (event) => {
+    if (event.target && event.target.files && event.target.files[0]) {
+      let file = event.target.files[0];
+      if (file.type !== "text/csv") {
+        toast.error("Please import csv file format!");
+        return;
+      }
+
+      Papa.parse(file, {
+        // header: true,
+        complete: function (results) {
+          let rawCSV = results.data;
+          if (rawCSV.length > 0) {
+            if (rawCSV[0] && rawCSV[0].length === 3) {
+              if (
+                rawCSV[0][0] !== "email" ||
+                rawCSV[0][1] !== "first_name" ||
+                rawCSV[0][2] !== "last_name"
+              ) {
+                toast.error("Wrong format header csv file!");
+              } else {
+                let result = [];
+
+                rawCSV.forEach((item, index) => {
+                  if (index > 0 && item.length === 3) {
+                    let obj = {};
+                    obj.email = item[0];
+                    obj.first_name = item[1];
+                    obj.last_name = item[2];
+
+                    result.push(obj);
+                  }
+                });
+
+                setUserlist(result);
+              }
+            } else {
+              toast.error("Wrong format csv file!");
+            }
+          } else {
+            toast.error("Not find data on csv file!");
+          }
+
+          event.target.value = null;
+        },
+      });
+    }
+  };
+
   return (
     <>
       <div className="my-3 add-new">
@@ -121,8 +173,13 @@ const TableUsers = (props) => {
           <b>List Users:</b>
         </span>
         <div className="group-btns">
-          <input id="import" type="file" hidden></input>
-          <label for="import" className="btn btn-warning">
+          <input
+            id="import"
+            type="file"
+            hidden
+            onChange={(event) => handleImportCSV(event)}
+          ></input>
+          <label htmlFor="import" className="btn btn-warning">
             <i class="fa-solid fa-upload"></i>
             <span> Import</span>
           </label>
@@ -218,7 +275,7 @@ const TableUsers = (props) => {
             })
           ) : (
             <tr>
-              <td className="text-center fs-5" colspan="5">
+              <td className="text-center fs-5" colSpan="5">
                 There are no users in the table
               </td>
             </tr>
