@@ -1,9 +1,23 @@
 import { useState } from "react";
+import { loginApi } from "../services/userService";
+import { toast } from "react-toastify";
 
 const Login = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      toast.error("Please enter a valid email & password!");
+      return;
+    }
+
+    let res = await loginApi(email, password);
+    if (res && res.token) {
+      localStorage.setItem("token", res.token);
+    }
+  };
 
   return (
     <>
@@ -33,6 +47,7 @@ const Login = (props) => {
         <button
           className={email && password ? "active" : ""}
           disabled={email && password ? false : true}
+          onClick={() => handleLogin()}
         >
           Login
         </button>
