@@ -15,9 +15,9 @@ instance.interceptors.response.use(
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
     const statusCode = error.response.status;
-    if (statusCode === 404) {
+    if (statusCode >= 400 || statusCode < 500) {
       return statusCode;
-    } else if (statusCode === 500) {
+    } else if (statusCode >= 500) {
       return statusCode;
     } else {
       return error.message;
