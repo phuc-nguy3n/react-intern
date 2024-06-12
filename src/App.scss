@@ -22,3 +22,11 @@ code {
   padding: 100px 0;
   text-align: center;
 }
+
+.navbar {
+  #basic-navbar-nav {
+    .dropdown-menu {
+      left: -79px;
+    }
+  }
+}
