@@ -3,7 +3,6 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { postCreateUser } from "../services/userService";
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const ModalAddNew = (props) => {
   const { isShowModelAddNew, handleClose, handleUpdateTable } = props;
