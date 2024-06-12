@@ -180,7 +180,7 @@ const TableUsers = (props) => {
             onChange={(event) => handleImportCSV(event)}
           ></input>
           <label htmlFor="import" className="btn btn-warning">
-            <i class="fa-solid fa-upload"></i>
+            <i className="fa-solid fa-upload"></i>
             <span> Import</span>
           </label>
           <CSVLink
