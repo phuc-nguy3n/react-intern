@@ -25,7 +25,8 @@ const Header = (props) => {
               <NavLink className="nav-link" to="/users">
                 Manage Users
               </NavLink>
-
+            </Nav>
+            <Nav>
               <NavDropdown title="Setting" id="basic-nav-dropdown">
                 <NavDropdown.Item href="/login">Login</NavDropdown.Item>
                 <NavDropdown.Item href="/logout">Logout</NavDropdown.Item>
