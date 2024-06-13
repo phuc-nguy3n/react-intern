@@ -3,10 +3,25 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import SungasLogo from "../assets/imgs/logo/sungas";
-import { useLocation, NavLink } from "react-router-dom";
+import { useLocation, NavLink, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const Header = (props) => {
+  const { isLoggedIn, setIsLoggedIn } = props;
+
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const goToLoginPage = () => {
+    navigate("/login");
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    goToLoginPage();
+    toast.success("Log out successfully!");
+  };
 
   return (
     <>
@@ -28,8 +43,15 @@ const Header = (props) => {
             </Nav>
             <Nav>
               <NavDropdown title="Setting" id="basic-nav-dropdown">
-                <NavDropdown.Item href="/login">Login</NavDropdown.Item>
-                <NavDropdown.Item href="/logout">Logout</NavDropdown.Item>
+                {isLoggedIn ? (
+                  <NavDropdown.Item onClick={() => handleLogout()}>
+                    Logout
+                  </NavDropdown.Item>
+                ) : (
+                  <NavLink className="dropdown-item" to="/login">
+                    Login
+                  </NavLink>
+                )}
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>
