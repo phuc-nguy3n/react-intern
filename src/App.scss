@@ -34,6 +34,14 @@ code {
 
 // App
 .app-container {
+  .navbar {
+    .welcome {
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+    }
+  }
+
   .login-container {
     display: flex;
     flex-direction: column;
@@ -104,5 +112,21 @@ code {
       margin-top: 20px;
       cursor: pointer;
     }
+  }
+}
+
+@media (max-width: 992px) {
+  .d-none-cus {
+    display: none !important;
+  }
+
+  .d-flex-cus {
+    display: flex !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .d-none-cus-2 {
+    display: none !important;
   }
 }
