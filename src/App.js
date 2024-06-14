@@ -5,16 +5,21 @@ import Container from "react-bootstrap/Container";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import { ToastContainer } from "react-toastify";
-import { Routes, Route } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { UserContext } from "./context/UserContext";
 
 function App() {
+  const { loginContext } = useContext(UserContext);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+  let token = localStorage.getItem("token");
+  let emailTemp = localStorage.getItem("email");
+
   useEffect(() => {
-    let token = localStorage.getItem("token");
-    if (token) {
+    if (token && emailTemp) {
       setIsLoggedIn(true);
+      loginContext(emailTemp, token);
     }
   }, []);
 
@@ -25,7 +30,17 @@ function App() {
         <Container>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/users" element={<TableUsers />} />
+            <Route
+              path="/users"
+              element={
+                token && emailTemp ? (
+                  <TableUsers />
+                ) : (
+                  <Navigate to="/login" replace />
+                )
+              }
+            />
+            {/* isLoggedIn === 'true' ? <UserHomePage /> : <Navigate to={URL.login */}
             <Route
               path="/login"
               element={<Login setIsLoggedIn={setIsLoggedIn} />}
