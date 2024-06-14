@@ -7,7 +7,7 @@ import { UserContext } from "../context/UserContext";
 // Login with email (eve.holt@reqres.in)
 
 const Login = (props) => {
-  const { setIsLoggedIn } = props;
+  const { setIsLoggedIn, setHiden } = props;
   const { loginContext } = useContext(UserContext);
   const navigate = useNavigate();
 
@@ -18,6 +18,7 @@ const Login = (props) => {
 
   const goToHomePage = () => {
     navigate("/");
+    setHiden(false);
   };
 
   useEffect(() => {
