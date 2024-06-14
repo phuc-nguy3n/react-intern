@@ -1,12 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { loginApi } from "../services/userService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 // Login with email (eve.holt@reqres.in)
 
 const Login = (props) => {
   const { setIsLoggedIn } = props;
+  const { loginContext } = useContext(UserContext);
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
@@ -20,7 +22,9 @@ const Login = (props) => {
 
   useEffect(() => {
     let token = localStorage.getItem("token");
+    let emailTemp = localStorage.getItem("email");
     if (token) {
+      loginContext(emailTemp, token);
       goToHomePage();
     }
   }, []);
@@ -34,7 +38,7 @@ const Login = (props) => {
     let res = await loginApi(email, password);
     setIsloading(false);
     if (res && res.token) {
-      localStorage.setItem("token", res.token);
+      loginContext(email, res.token);
       setIsLoggedIn(true);
       goToHomePage();
     } else {
@@ -87,12 +91,12 @@ const Login = (props) => {
           onClick={() => handleLogin()}
         >
           {isLoading ? (
-            <i class="fa-solid fa-circle-notch fa-spin"></i>
+            <i className="fa-solid fa-circle-notch fa-spin"></i>
           ) : (
             "Login"
           )}
         </button>
-        <div className="back">
+        <div className="back" onClick={goToHomePage}>
           <i className="fa-solid fa-chevron-left"></i>
           <span> Go back</span>
         </div>
