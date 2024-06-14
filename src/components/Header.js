@@ -5,15 +5,16 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import SungasLogo from "../assets/imgs/logo/sungas";
 import { useLocation, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../context/UserContext";
 
 const Header = (props) => {
-  const { isLoggedIn, setIsLoggedIn } = props;
-  const { user, logout } = useContext(UserContext);
-
   const location = useLocation();
   const navigate = useNavigate();
+
+  const { hiden, setHiden } = props;
+  const { isLoggedIn, setIsLoggedIn } = props;
+  const { user, logout } = useContext(UserContext);
 
   const goToLoginPage = () => {
     navigate("/login");
@@ -64,17 +65,23 @@ const Header = (props) => {
                 </div>
               )}
 
-              <NavDropdown title="Setting" id="basic-nav-dropdown">
-                {isLoggedIn ? (
-                  <NavDropdown.Item onClick={() => handleLogout()}>
-                    Logout
-                  </NavDropdown.Item>
-                ) : (
-                  <NavLink className="dropdown-item" to="/login">
-                    Login
-                  </NavLink>
-                )}
-              </NavDropdown>
+              {hiden === false && (
+                <NavDropdown title="Setting" id="basic-nav-dropdown">
+                  {isLoggedIn ? (
+                    <NavDropdown.Item onClick={() => handleLogout()}>
+                      Logout
+                    </NavDropdown.Item>
+                  ) : (
+                    <NavLink
+                      onClick={() => setHiden(true)}
+                      className="dropdown-item"
+                      to="/login"
+                    >
+                      Login
+                    </NavLink>
+                  )}
+                </NavDropdown>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
