@@ -12,6 +12,7 @@ import { UserContext } from "./context/UserContext";
 function App() {
   const { loginContext } = useContext(UserContext);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [hiden, setHiden] = useState(false);
 
   let token = localStorage.getItem("token");
   let emailTemp = localStorage.getItem("email");
@@ -23,10 +24,21 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    if (window.location.pathname === "/login") {
+      setHiden(true);
+    }
+  }, []);
+
   return (
     <>
       <div className="app-container">
-        <Header isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+        <Header
+          isLoggedIn={isLoggedIn}
+          setIsLoggedIn={setIsLoggedIn}
+          hiden={hiden}
+          setHiden={setHiden}
+        />
         <Container>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -40,10 +52,11 @@ function App() {
                 )
               }
             />
-            {/* isLoggedIn === 'true' ? <UserHomePage /> : <Navigate to={URL.login */}
             <Route
               path="/login"
-              element={<Login setIsLoggedIn={setIsLoggedIn} />}
+              element={
+                <Login setIsLoggedIn={setIsLoggedIn} setHiden={setHiden} />
+              }
             />
             Login
           </Routes>
