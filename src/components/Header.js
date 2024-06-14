@@ -5,9 +5,12 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import SungasLogo from "../assets/imgs/logo/sungas";
 import { useLocation, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 const Header = (props) => {
   const { isLoggedIn, setIsLoggedIn } = props;
+  const { user, logout } = useContext(UserContext);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -17,7 +20,7 @@ const Header = (props) => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
+    logout();
     setIsLoggedIn(false);
     goToLoginPage();
     toast.success("Log out successfully!");
@@ -30,18 +33,37 @@ const Header = (props) => {
           <Navbar.Brand href="/">
             <SungasLogo />
           </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <div className="d-flex">
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          </div>
+
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto" activeKey={location.pathname}>
-              <NavLink className="nav-link" to="/">
-                Home
-              </NavLink>
+              {user && user.email !== "" && (
+                <div className="welcome d-none-cus-2 py-1 px-0">
+                  Welcome &nbsp; <b>{user.email}</b>
+                </div>
+              )}
 
-              <NavLink className="nav-link" to="/users">
-                Manage Users
-              </NavLink>
+              {isLoggedIn && (
+                <>
+                  <NavLink className="nav-link" to="/">
+                    Home
+                  </NavLink>
+
+                  <NavLink className="nav-link" to="/users">
+                    Manage Users
+                  </NavLink>
+                </>
+              )}
             </Nav>
             <Nav>
+              {user && user.email !== "" && (
+                <div className="welcome d-none-cus">
+                  Welcome &nbsp; <b>{user.email}</b>
+                </div>
+              )}
+
               <NavDropdown title="Setting" id="basic-nav-dropdown">
                 {isLoggedIn ? (
                   <NavDropdown.Item onClick={() => handleLogout()}>
