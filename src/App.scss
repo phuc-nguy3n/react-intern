@@ -113,6 +113,17 @@ code {
       cursor: pointer;
     }
   }
+
+  .not-found-alert {
+    span {
+      cursor: pointer;
+      text-decoration: underline;
+
+      &:hover {
+        font-weight: bold;
+      }
+    }
+  }
 }
 
 @media (max-width: 992px) {
