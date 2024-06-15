@@ -5,10 +5,11 @@ import TableUsers from "../components/TableUsers";
 import { useEffect, useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import PrivateRoute from "./PriveRoutes";
+import NotFound from "./NotFound";
 
 const AppRoutes = (props) => {
   const { setIsLoggedIn, setHiden } = props;
-  const { user, loginContext } = useContext(UserContext);
+  const { loginContext } = useContext(UserContext);
 
   useEffect(() => {
     let token = localStorage.getItem("token");
@@ -42,6 +43,8 @@ const AppRoutes = (props) => {
             </PrivateRoute>
           }
         />
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
