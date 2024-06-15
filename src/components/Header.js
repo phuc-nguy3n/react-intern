@@ -5,7 +5,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import SungasLogo from "../assets/imgs/logo/sungas";
 import { useLocation, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 
 const Header = (props) => {
@@ -34,9 +34,12 @@ const Header = (props) => {
           <Navbar.Brand href="/">
             <SungasLogo />
           </Navbar.Brand>
-          <div className="d-flex">
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          </div>
+
+          {hiden === false && (
+            <div className="d-flex">
+              <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            </div>
+          )}
 
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto" activeKey={location.pathname}>
