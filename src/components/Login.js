@@ -36,7 +36,7 @@ const Login = (props) => {
       return;
     }
     setIsloading(true);
-    let res = await loginApi(email, password);
+    let res = await loginApi(email.trim(), password);
     setIsloading(false);
     if (res && res.token) {
       loginContext(email, res.token);
@@ -61,6 +61,14 @@ const Login = (props) => {
     }
   };
 
+  const handlePressEnter = (event) => {
+    if (email && password) {
+      if (event.key === "Enter") {
+        handleLogin();
+      }
+    }
+  };
+
   return (
     <>
       <div className="login-container col-12 col-sm-8 col-md-6 col-xl-4">
@@ -71,6 +79,7 @@ const Login = (props) => {
           onChange={(event) => setEmail(event.target.value)}
           type="text"
           placeholder="Email or username..."
+          onKeyDown={(event) => handlePressEnter(event)}
         />
         <div className="field-group">
           <input
@@ -78,6 +87,7 @@ const Login = (props) => {
             onChange={(event) => setPassword(event.target.value)}
             type={isShowPassword ? "text" : "password"}
             placeholder="Password..."
+            onKeyDown={(event) => handlePressEnter(event)}
           />
           <i
             onClick={() => setIsShowPassword(!isShowPassword)}
@@ -90,6 +100,7 @@ const Login = (props) => {
           className={handleStatusLoginBtn()}
           disabled={email && password ? false : true}
           onClick={() => handleLogin()}
+          onKeyDown={(event) => handlePressEnter(event)}
         >
           {isLoading ? (
             <i className="fa-solid fa-circle-notch fa-spin"></i>
