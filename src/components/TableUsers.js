@@ -168,11 +168,11 @@ const TableUsers = (props) => {
 
   return (
     <>
-      <div className="my-3 add-new">
+      <div className="my-3 add-new d-sm-flex">
         <span>
           <b>List Users:</b>
         </span>
-        <div className="group-btns">
+        <div className="group-btns mt-sm-0 mt-2">
           <input
             id="import"
             type="file"
@@ -199,7 +199,7 @@ const TableUsers = (props) => {
         </div>
       </div>
 
-      <div className="col-4 my-3">
+      <div className="col-sm-4 my-3">
         <input
           className="form-control"
           placeholder="Search user by email..."
@@ -207,89 +207,92 @@ const TableUsers = (props) => {
         />
       </div>
 
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>
-              <div className="sort-header">
-                <span>ID</span>
-                <span>
-                  <i
-                    className="fa-solid fa-arrow-down-long"
-                    onClick={() => handleSort("desc", "id")}
-                  ></i>
-                  <i
-                    className="fa-solid fa-arrow-up-long"
-                    onClick={() => handleSort("asc", "id")}
-                  ></i>
-                </span>
-              </div>
-            </th>
-            <th>Email</th>
-            <th>
-              <div className="sort-header">
-                <span>First Name</span>
-                <span>
-                  <i
-                    className="fa-solid fa-arrow-down-long"
-                    onClick={() => handleSort("desc", "first_name")}
-                  ></i>
-                  <i
-                    className="fa-solid fa-arrow-up-long"
-                    onClick={() => handleSort("asc", "first_name")}
-                  ></i>
-                </span>
-              </div>
-            </th>
-            <th>Last Name</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {userlist && userlist.length > 0 ? (
-            userlist.map((user, index) => {
-              return (
-                <>
-                  <tr key={`user-${index}`}>
-                    <td>{user.id}</td>
-                    <td>{user.email}</td>
-                    <td>{user.first_name}</td>
-                    <td>{user.last_name}</td>
-                    <td>
-                      <button
-                        className="btn btn-warning me-3"
-                        onClick={() => handleEditUser(user)}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className="btn btn-danger"
-                        onClick={() => handleDeleteUser(user)}
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                </>
-              );
-            })
-          ) : (
+      <div className="customize-table">
+        <Table striped bordered hover>
+          <thead>
             <tr>
-              <td className="text-center fs-5" colSpan="5">
-                There are no users in the table
-              </td>
+              <th>
+                <div className="sort-header">
+                  <span>ID</span>
+                  <span>
+                    <i
+                      className="fa-solid fa-arrow-down-long"
+                      onClick={() => handleSort("desc", "id")}
+                    ></i>
+                    <i
+                      className="fa-solid fa-arrow-up-long"
+                      onClick={() => handleSort("asc", "id")}
+                    ></i>
+                  </span>
+                </div>
+              </th>
+              <th>Email</th>
+              <th>
+                <div className="sort-header">
+                  <span>First Name</span>
+                  <span>
+                    <i
+                      className="fa-solid fa-arrow-down-long"
+                      onClick={() => handleSort("desc", "first_name")}
+                    ></i>
+                    <i
+                      className="fa-solid fa-arrow-up-long"
+                      onClick={() => handleSort("asc", "first_name")}
+                    ></i>
+                  </span>
+                </div>
+              </th>
+              <th>Last Name</th>
+              <th>Action</th>
             </tr>
-          )}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {userlist && userlist.length > 0 ? (
+              userlist.map((user, index) => {
+                return (
+                  <>
+                    <tr key={`user-${index}`}>
+                      <td>{user.id}</td>
+                      <td>{user.email}</td>
+                      <td>{user.first_name}</td>
+                      <td>{user.last_name}</td>
+                      <td>
+                        <button
+                          className="btn btn-warning me-md-3 btn-edit"
+                          onClick={() => handleEditUser(user)}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className="btn btn-danger"
+                          onClick={() => handleDeleteUser(user)}
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  </>
+                );
+              })
+            ) : (
+              <tr>
+                <td className="text-center fs-5" colSpan="5">
+                  There are no users in the table
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </Table>
+      </div>
 
       <ReactPaginate
+        className="customize-pagination"
         breakLabel="..."
-        nextLabel="next >"
+        nextLabel=">"
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}
         pageCount={totalPages}
-        previousLabel="< previous"
+        previousLabel="<"
         pageClassName="page-item"
         pageLinkClassName="page-link"
         previousClassName="page-item"

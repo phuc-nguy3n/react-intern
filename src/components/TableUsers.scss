@@ -9,7 +9,6 @@
 }
 
 .add-new {
-  display: flex;
   justify-content: space-between;
   align-items: center;
 
@@ -20,5 +19,28 @@
 
   i {
     padding: 0 2px;
+  }
+}
+
+.customize-table {
+  overflow-x: auto;
+  width: inherit;
+}
+
+.customize-pagination {
+  display: flex;
+  padding-left: 0;
+  list-style: none;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .customize-table {
+    .btn {
+      width: 100%;
+    }
+    .btn-edit {
+      margin-bottom: 5px;
+    }
   }
 }
