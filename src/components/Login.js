@@ -1,20 +1,23 @@
-import { useState, useEffect, useContext } from "react";
-import { loginApi } from "../services/userService";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import { UserContext } from "../context/UserContext";
+import { handleLoginRedux } from "../redux/actions/userActions";
+import { useDispatch, useSelector } from "react-redux";
 
 // Login with email (eve.holt@reqres.in)
 
 const Login = (props) => {
   const { setIsLoggedIn, setHiden } = props;
-  const { loginContext } = useContext(UserContext);
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isShowPassword, setIsShowPassword] = useState(false);
-  const [isLoading, setIsloading] = useState(false);
+
+  const isLoading = useSelector((state) => state.user.isLoading);
+  const user = useSelector((state) => state.user.account);
 
   const goToHomePage = () => {
     navigate("/");
@@ -22,31 +25,18 @@ const Login = (props) => {
   };
 
   useEffect(() => {
-    let token = localStorage.getItem("token");
-    let emailTemp = localStorage.getItem("email");
-    if (token) {
-      loginContext(emailTemp, token);
+    if (user && user.auth === true) {
       goToHomePage();
+      setIsLoggedIn(true);
     }
-  }, []);
+  }, [user]);
 
   const handleLogin = async () => {
     if (!email || !password) {
       toast.error("Please enter a valid email & password!");
       return;
     }
-    setIsloading(true);
-    let res = await loginApi(email.trim(), password);
-    setIsloading(false);
-    if (res && res.token) {
-      loginContext(email, res.token);
-      setIsLoggedIn(true);
-      goToHomePage();
-    } else {
-      if (res && res.status === 400) {
-        toast.error(res.data.error);
-      }
-    }
+    dispatch(handleLoginRedux(email, password));
   };
 
   const handleStatusLoginBtn = () => {
