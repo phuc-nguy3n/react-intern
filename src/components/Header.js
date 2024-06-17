@@ -7,7 +7,6 @@ import { useLocation, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { handleLogoutRedux } from "../redux/actions/userActions";
-import { useEffect } from "react";
 
 const Header = (props) => {
   const location = useLocation();
@@ -26,14 +25,9 @@ const Header = (props) => {
   const handleLogout = () => {
     dispatch(handleLogoutRedux());
     setIsLoggedIn(false);
+    goToHomePage();
     toast.success("Log out successfully!");
   };
-
-  useEffect(() => {
-    if (user && user.auth === false) {
-      goToHomePage();
-    }
-  }, [user]);
 
   return (
     <>
