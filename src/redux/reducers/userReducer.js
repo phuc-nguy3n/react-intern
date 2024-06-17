@@ -25,7 +25,9 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         account: {
+          email: "",
           auth: false,
+          token: "",
         },
         isLoading: false,
         isError: true,
@@ -49,7 +51,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
         account: {
           email: "",
           token: "",
-          auth: false,
+          auth: null,
         },
         isLoading: false,
         isError: false,
