@@ -5,27 +5,35 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import SungasLogo from "../assets/imgs/logo/sungas";
 import { useLocation, NavLink, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useContext } from "react";
-import { UserContext } from "../context/UserContext";
+import { useDispatch, useSelector } from "react-redux";
+import { handleLogoutRedux } from "../redux/actions/userActions";
+import { useEffect } from "react";
 
 const Header = (props) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const user = useSelector((state) => state.user.account);
 
   const { hiden, setHiden } = props;
   const { isLoggedIn, setIsLoggedIn } = props;
-  const { user, logout } = useContext(UserContext);
 
-  const goToLoginPage = () => {
-    navigate("/login");
+  const goToHomePage = () => {
+    navigate("/");
   };
 
   const handleLogout = () => {
-    logout();
+    dispatch(handleLogoutRedux());
     setIsLoggedIn(false);
-    goToLoginPage();
     toast.success("Log out successfully!");
   };
+
+  useEffect(() => {
+    if (user && user.auth === false) {
+      goToHomePage();
+    }
+  }, [user]);
 
   return (
     <>
