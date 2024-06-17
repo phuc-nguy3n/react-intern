@@ -2,21 +2,20 @@ import { Routes, Route } from "react-router-dom";
 import Home from "../components/Home";
 import Login from "../components/Login";
 import TableUsers from "../components/TableUsers";
-import { useEffect, useContext } from "react";
-import { UserContext } from "../context/UserContext";
+import { useEffect } from "react";
 import PrivateRoute from "./PriveRoutes";
 import NotFound from "./NotFound";
+import { useDispatch } from "react-redux";
+import { handleRefresh } from "../redux/actions/userActions";
 
 const AppRoutes = (props) => {
   const { setIsLoggedIn, setHiden } = props;
-  const { loginContext } = useContext(UserContext);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    let token = localStorage.getItem("token");
-    let emailTemp = localStorage.getItem("email");
-    if (token && emailTemp) {
+    if (localStorage.getItem("token")) {
       setIsLoggedIn(true);
-      loginContext(emailTemp, token);
+      dispatch(handleRefresh());
     }
   }, []);
 
